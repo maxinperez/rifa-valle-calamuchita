@@ -96,7 +96,8 @@
 
   function imagenPremio(premio, tono) {
     if (premio.imagen) {
-      return `<img class="premio__img" src="${esc(premio.imagen)}" alt="${esc(premio.nombre)}" loading="lazy">`;
+      return `<div class="premio__foto"><img class="premio__img" src="${esc(premio.imagen)}" alt="${esc(premio.nombre)}" loading="lazy">` +
+        (premio.ilustrativa ? '<span class="premio__ilustrativa">Imagen ilustrativa</span>' : '') + '</div>';
     }
     return `<div class="premio__img premio__img--vacio tono-${tono % 4}" role="img" aria-label="Foto de ${esc(premio.nombre)} próximamente">
       <svg aria-hidden="true"><use href="#regalo"/></svg><span>Foto próximamente</span></div>`;

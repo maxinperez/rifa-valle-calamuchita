@@ -562,3 +562,24 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* --- Fotos de premios ---------------------------------------------------- */
+
+.premio__foto { position: relative; }
+.premio-mayor .premio__foto .premio__img { height: 100%; }
+.premio__ilustrativa {
+  position: absolute; left: 6px; bottom: 6px;
+  padding: .1rem .45rem; border-radius: 6px;
+  background: rgba(29, 43, 36, .72); color: #fff;
+  font-size: .62rem; font-weight: 700; letter-spacing: .02em;
+}
+
+.nota-imagenes {
+  display: flex; align-items: flex-start; gap: .55rem;
+  max-width: 62ch; margin: .9rem 0 0; padding: .65rem .9rem;
+  background: var(--papel); border: 1px solid var(--borde); border-left: 4px solid var(--mostaza);
+  border-radius: 10px;
+  font-size: .88rem; line-height: 1.45; color: var(--tinta-suave);
+}
+.nota-imagenes svg { width: 18px; height: 18px; flex: none; margin-top: 1px; color: var(--mostaza-osc); }
+.nota-imagenes strong { color: var(--tinta); }
