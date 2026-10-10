@@ -4,8 +4,9 @@
  * Después de editar, volvé a publicar en Vercel.
  */
 window.RIFA = {
-  nombre: 'Gran Rifa Potrero',
-  localidades: ['Potrero de Garay', 'Santa Rosa de Calamuchita', 'Embalse', 'Los Reartes', 'y alrededores'],
+  nombre: 'Rifa Artículos Lohema',
+  // Zonas donde trabaja Arts Lohema (portada y apartado "Quiénes organizamos")
+  localidades: ['Todo el Valle de Calamuchita', 'Departamento Santa María', 'Córdoba Capital', 'Río Cuarto', 'Las Higueras', 'Departamento Ischilín'],
 
   totalNumeros: 500,
   porPagina: 100,
@@ -15,12 +16,15 @@ window.RIFA = {
   whatsapp: '5493547319359',
   whatsappVisible: '3547 31-9359',
 
+  // Grupo comunitario de Arts Lohema (no es el canal de venta de la rifa)
+  grupoWhatsapp: 'https://chat.whatsapp.com/ET9cz48G8uJ7zHoX92NKvV',
+
   alias: 'xxxxxx',
   billetera: 'Naranja X',
 
   sorteo: {
-    fecha: 'A confirmar',
-    lugar: 'Lugar a confirmar',
+    fecha: 'Al completar la venta',
+    lugar: 'Feria de la Economía Social · Villa Ciudad Parque',
     modalidad: 'A confirmar',
   },
 

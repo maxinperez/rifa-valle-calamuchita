@@ -62,12 +62,18 @@
     };
     // Cada localidad queda entera en su renglón; el separador va al final de la anterior.
     $('[data-c="lugares"]').innerHTML = C.localidades.map((l) => `<span>${esc(l)}</span>`).join(' ');
+    $('#lohema-zonas').innerHTML = C.localidades.map((l) => `<li>${esc(l)}</li>`).join('');
     $$('[data-c]').forEach((el) => {
       const valor = textos[el.dataset.c];
       if (valor != null) el.textContent = valor;
     });
     $$('[data-wa]').forEach((a) => {
       a.href = waLink('¡Hola! Tengo una consulta sobre la ' + C.nombre + '.');
+      a.target = '_blank';
+      a.rel = 'noopener';
+    });
+    $$('[data-grupo-wa]').forEach((a) => {
+      a.href = C.grupoWhatsapp;
       a.target = '_blank';
       a.rel = 'noopener';
     });

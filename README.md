@@ -1,6 +1,6 @@
-# Gran Rifa Potrero · Valle de Calamuchita
+# Rifa Artículos Lohema · Arts Lohema
 
-Web de la rifa de 500 números ($15.000 cada uno) para Potrero de Garay, Santa Rosa de Calamuchita, Embalse, Los Reartes y alrededores.
+Web de la rifa de 500 números ($15.000 cada uno) organizada por Arts Lohema (artículos para el hogar). El sorteo se hace al completar la venta, en la Feria de la Economía Social de Villa Ciudad Parque.
 Muestra qué números están **vendidos**, **reservados** o **disponibles**, y permite pedirlos por WhatsApp.
 La venta se registra en una hoja de Google Sheets y la página se actualiza sola.
 

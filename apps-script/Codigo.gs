@@ -2,7 +2,7 @@
 // ↑ Limita el script a ESTA hoja: Google solo pide permiso sobre este archivo, no sobre todas tus hojas.
 
 /**
- * Gran Rifa Potrero · conexión entre la hoja "Ventas" y la página web.
+ * Rifa Artículos Lohema · conexión entre la hoja "Ventas" y la página web.
  *
  * Cómo instalarlo (una sola vez):
  *   1. En la hoja de cálculo: Extensiones → Apps Script.
