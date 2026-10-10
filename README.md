@@ -1,103 +1,177 @@
-# Gran Rifa Potrero
+# Gran Rifa Potrero · Valle de Calamuchita
 
-Página para mostrar los 500 números de la rifa (vendidos, reservados y disponibles) y pedirlos por WhatsApp.
-Los datos salen de una hoja de Google Sheets: cargás una venta en la hoja y la página se actualiza sola.
+Web de la rifa de 500 números ($15.000 cada uno) para Potrero de Garay, Santa Rosa de Calamuchita, Embalse, Los Reartes y alrededores.
+Muestra qué números están **vendidos**, **reservados** o **disponibles**, y permite pedirlos por WhatsApp.
+La venta se registra en una hoja de Google Sheets y la página se actualiza sola.
+
+- **Producción:** https://rifa-potrero.vercel.app
+- **Vista de demostración:** https://rifa-potrero.vercel.app/?demo (números de prueba, no lee la hoja)
+
+---
+
+## Stack
+
+| Capa | Tecnología | Para qué |
+|---|---|---|
+| Frontend | **HTML5 + CSS3 + JavaScript (vanilla, ES2020)** | Página estática, sin framework, sin build y sin dependencias de npm |
+| Estilos | CSS puro: variables, Grid, Flexbox, `mask` | Estética Feria + Bosque, diseño responsive (celular primero) |
+| Tipografías | Google Fonts: **Lilita One** (títulos y números) y **Nunito** (texto) | |
+| Íconos | SVG en línea (sprite con `<symbol>`) | Pinos, regalos, íconos de interfaz; sin librerías |
+| API | **Vercel Serverless Function** en Node.js (`api/numeros.js`) | Intermediario entre la página y la hoja; caché en la CDN |
+| Hosting | **Vercel** (plan Hobby) | Sitio estático + función + CDN + HTTPS |
+| Base de datos | **Google Sheets** | Registro de compradores y números |
+| Conector de datos | **Google Apps Script** (runtime V8) publicado como aplicación web | Lee la hoja y devuelve solo los números en JSON |
+| Contacto y pago | WhatsApp (enlaces `wa.me`) + transferencia a Naranja X | El pedido se arma solo en un mensaje de WhatsApp |
+| Control de versiones | Git + GitHub (`rifa-valle-calamuchita`) | |
+| Herramientas | Vercel CLI (`npx vercel`), Python `http.server` para pruebas locales | |
+
+## Arquitectura
 
 ```
-index.html             página
-css/styles.css         estilos (Feria + Bosque)
-js/config.js           ← lo que vas a editar: alias, sorteo, premios, fotos
-js/app.js              lógica (grilla, páginas, búsqueda, carrito, WhatsApp)
-api/numeros.js         intermediario en Vercel entre la página y la hoja
-vercel.json            encabezados de seguridad
-img/premios/           fotos de los premios
-apps-script/Codigo.gs  script que conecta la hoja
+Visitante
+   │  (HTTPS)
+   ▼
+Página estática ─────────► /api/numeros  ──────────► Apps Script (doGet) ──► Hoja "Ventas"
+index.html, css, js         Función en Vercel          Solo lectura              Nombre, DNI, teléfono,
+                            · caché CDN 30 s           · caché 30 s              números, estado
+                            · filtra: solo enteros     · devuelve solo números
+                              del 1 al 500
+                            · URL del script en la
+                              variable APPS_SCRIPT_URL
 ```
 
+- La página **nunca** recibe nombres, DNI ni teléfonos: solo listas de números.
+- Gracias a la caché, aunque entren cientos de personas a la vez, el Apps Script recibe un par de pedidos por minuto (Google limita las ejecuciones simultáneas por cuenta).
+- Respuesta de `/api/numeros`:
+  ```json
+  {"ok":true,"total":500,"vendidos":[7,145],"reservados":[12],"actualizado":"2026-10-10T02:02:08.805Z"}
+  ```
+  Si algo falla: `{"ok":false,"error":"sin-config"}` (falta la variable en Vercel) o `{"ok":false,"error":"sin-datos"}` (no responde el Apps Script).
+
+## Estructura
+
 ```
-Visitante → página (Vercel) → /api/numeros (Vercel, caché 30 s) → Apps Script → hoja "Ventas"
-                                    └─ solo viajan números del 1 al 500
+├─ index.html             Página: hero, premios, grilla de números, cómo participar, bases y condiciones
+├─ css/styles.css         Estilos
+├─ js/config.js           ← Configuración editable: precio, alias, WhatsApp, sorteo, premios, fotos
+├─ js/app.js              Lógica: pestañas, grilla, búsqueda, filtro, carrito, mensaje de WhatsApp, refresco
+├─ api/numeros.js         Función serverless (Vercel) que consulta el Apps Script
+├─ apps-script/Codigo.gs  Script para pegar en la hoja (no se publica en la web)
+├─ img/favicon.svg
+├─ img/premios/           Fotos de los premios
+├─ vercel.json            Encabezados de seguridad
+├─ .vercelignore          Lista de archivos que se publican (todo lo demás queda privado)
+└─ .gitignore
 ```
 
-## 1. Pasar la hoja a tu cuenta (maxi2017p@gmail.com)
+## Funcionalidades
 
-La hoja original ya está compartida con tu Gmail.
+- 500 números en 5 páginas de 100 (001–100 … 401–500), con contador de libres por página.
+- Estados: disponible, elegido, **reservado** (pino amarillo) y **vendido** (pino verde).
+- Buscador de número, filtro "Ver solo disponibles" y barra de progreso de la venta.
+- Carrito: elegís varios números (también entre páginas), ves el total y se arma el mensaje de WhatsApp con los números, el total, el alias y los datos a completar.
+- La selección se guarda en el navegador del visitante (solo los números).
+- Refresco automático cada 60 s mientras la pestaña está visible.
+- Premios con lugar para foto ("Foto próximamente" mientras no haya imagen).
+- Bases y condiciones en letra chica, incluida la cláusula de datos personales (Ley 25.326).
 
-1. Entrá a Google Drive con **maxi2017p@gmail.com** → "Compartidos conmigo" → **Rifa Potrero - Ventas**.
-2. **Archivo → Hacer una copia**. Nombre: `Rifa Potrero - Ventas`. Guardala en "Mi unidad".
-3. Trabajá siempre sobre **tu copia**. Revisá que en "Compartir" diga **Restringido** (solo vos).
+---
+
+## La hoja de cálculo
+
+Pestaña **`Ventas`**:
 
 | Columna | Qué va |
 |---|---|
 | Nombre y apellido | Como figura en el DNI |
 | DNI | Solo números |
 | Teléfono | Para llamar al ganador si no se presenta |
-| Fecha de compra | Si la dejás vacía, se completa sola con la fecha de hoy |
-| Números | Separados por coma: `12, 145, 300` |
-| Estado | `Pagado` (pino verde), `Reservado` (pino amarillo) o `Anulado` (libera los números). Vacío cuenta como Pagado |
-| Notas | Lo que quieras |
-| Control (automático) | No escribas acá: avisa si un número está repetido o no existe |
+| Fecha de compra | Si queda vacía, se completa sola con la fecha de hoy |
+| Números | Separados por coma: `12, 145, 300` (columna en formato texto) |
+| Estado | `Pagado` (vendido), `Reservado` o `Anulado` (libera los números). Vacío cuenta como Pagado |
+| Notas | Libre |
+| Control (automático) | No escribir: avisa si un número está repetido o fuera de rango |
 
-**Flujo de una venta:** te llega el comprobante por WhatsApp → **verificás en la app de Naranja X que la plata entró** (no alcanza con la captura) → agregás una fila con Estado `Pagado`.
-Si alguien avisa antes de pagar, cargalo como `Reservado` y pasalo a `Pagado` cuando confirmes.
-Si una venta se cae, poné `Anulado` (no borres la fila, así queda el historial).
+**Cómo se carga una venta:** llega el comprobante por WhatsApp → se verifica **en la app de Naranja X** que la plata entró (no alcanza con la captura) → se agrega una fila con Estado `Pagado`.
+Si alguien avisa antes de pagar, va como `Reservado`. Si una venta se cae, se pone `Anulado` (no se borra la fila, así queda el historial).
 
-En la hoja aparece el menú **Rifa** con "Revisar números repetidos" y "Ver resumen".
+La hoja tiene un menú **Rifa** con "Revisar números repetidos" y "Ver resumen".
 
-## 2. Conectar la hoja (una sola vez, ~5 minutos)
+## Puesta en marcha
 
-1. En **tu copia** de la hoja → **Extensiones → Apps Script**.
-2. Borrá el contenido de `Código.gs`, pegá todo [`apps-script/Codigo.gs`](apps-script/Codigo.gs) y guardá (Ctrl+S).
-3. **Implementar → Nueva implementación** → engranaje → **Aplicación web**:
-   - Ejecutar como: **Yo**
-   - Quién tiene acceso: **Cualquier usuario**
-4. **Implementar → Autorizar acceso**. Google va a pedir permiso **solo sobre esta hoja** (el script tiene `@OnlyCurrentDoc`). Si aparece "Google no verificó esta app": **Configuración avanzada → Ir a … (no seguro)**; es tu propio script.
-5. Copiá la **URL de la aplicación web** (termina en `/exec`). **No la publiques**: va solamente en Vercel (paso 5).
+### 1. Apps Script (una sola vez)
 
-Para probarla, abrila en el navegador: tiene que mostrar `{"ok":true,"total":500,"vendidos":[],...}`.
+1. En la hoja → **Extensiones → Apps Script**.
+2. Pegar todo [`apps-script/Codigo.gs`](apps-script/Codigo.gs) y guardar.
+3. **Implementar → Nueva implementación → Aplicación web**: Ejecutar como **Yo**; Quién tiene acceso **Cualquier usuario**.
+4. Autorizar. Google pide permiso **solo sobre esta hoja** (`@OnlyCurrentDoc`).
+5. Copiar la URL que termina en `/exec`. **No publicarla**: va solo en Vercel.
 
-**Si después cambiás el script:** Implementar → Administrar implementaciones → lápiz → Versión: **Nueva versión** → Implementar. La URL no cambia.
+Si se modifica el script: Implementar → Administrar implementaciones → lápiz → Versión **Nueva versión**. La URL no cambia.
 
-## 3. Cambiar datos de la rifa
+### 2. Vercel
 
-Todo está en `js/config.js`: `alias`, `sorteo` (fecha, lugar, modalidad), `premioMayor` (marca y modelo de la moto) y las fotos (`imagen: 'img/premios/moto.jpg'`).
-Las bases y condiciones están en `index.html` (al final, sección `bases`).
+Proyecto `rifa-potrero`, ya vinculado a esta carpeta.
 
-## 4. Probar en tu computadora
+1. **Settings → Environment Variables** → `APPS_SCRIPT_URL` = URL `/exec` (tipo **Secret**, entorno **Production**).
+2. Publicar:
+   ```bash
+   npx vercel --prod
+   ```
+3. Verificar en `https://rifa-potrero.vercel.app/api/numeros` que diga `"ok":true`.
+
+Cargar ventas en la hoja **no** requiere volver a publicar (los cambios se ven en ~30 s).
+
+Pausar y reactivar el sitio (pide confirmar escribiendo el nombre del proyecto):
+
+```bash
+npx vercel project pause rifa-potrero
+```
+
+```bash
+npx vercel project resume rifa-potrero
+```
+
+### 3. Probar en la computadora
 
 ```bash
 python -m http.server 5173
 ```
 
-Abrí http://localhost:5173/?demo (números de prueba). Sin `?demo` vas a ver el aviso "Todavía no conectamos la planilla", porque `/api/numeros` solo existe en Vercel (o con `npx vercel dev`).
+Abrir http://localhost:5173/?demo. Sin `?demo` aparece "Todavía no conectamos la planilla", porque `/api/numeros` solo existe en Vercel (o con `npx vercel dev`).
 
-## 5. Publicar en Vercel (plan Hobby, gratis)
+## Configuración
 
-Proyecto: `rifa-potrero` → **https://rifa-potrero.vercel.app** (ya creado y vinculado a esta carpeta).
+Todo lo editable está en [`js/config.js`](js/config.js):
 
-`.vercelignore` funciona como lista de permitidos: solo se publican `index.html`, `css/`, `js/`, `img/`, `api/` y `vercel.json`. Cualquier otro archivo que dejes en la carpeta (por ejemplo una planilla `.xlsx`) **no** se sube.
+| Campo | Qué es |
+|---|---|
+| `precio`, `totalNumeros`, `porPagina` | Valor del número, cantidad total y números por página |
+| `whatsapp`, `whatsappVisible` | Número en formato internacional (`549…`) y como se muestra |
+| `alias`, `billetera` | Datos de la transferencia |
+| `sorteo` | Fecha, lugar y modalidad |
+| `premioMayor`, `premios` | Nombre, detalle, cantidad e imagen de cada premio |
+| `refrescoSegundos` | Cada cuánto se actualiza la grilla |
 
-1. Cargá la URL del Apps Script como variable de entorno:
-   - En vercel.com → tu proyecto → **Settings → Environment Variables** → nombre `APPS_SCRIPT_URL`, valor la URL `/exec`, entorno **Production**.
-   - O por terminal: `npx vercel env add APPS_SCRIPT_URL production`
-2. Volvé a publicar para que tome la variable: `npx vercel --prod`.
-3. Verificá: abrí `https://rifa-potrero.vercel.app/api/numeros` (tiene que mostrar el JSON) y la página.
+Fotos: copiarlas a `img/premios/` y poner la ruta, por ejemplo `imagen: 'img/premios/moto.jpg'`.
+Las bases y condiciones están en `index.html`, sección `bases`.
 
-Cargar ventas en la hoja **no** requiere volver a publicar: la página se actualiza sola (tarda hasta ~30 s por la caché).
+---
 
-## 6. Seguridad: qué ya está hecho y qué te toca
+## Seguridad
 
-**En el código**
-- La web nunca recibe nombres, DNI ni teléfonos: el script solo devuelve números y `/api/numeros` vuelve a filtrar (solo enteros del 1 al 500).
-- La URL del Apps Script no aparece en la página: está en una variable de entorno de Vercel.
-- Caché de 30 s en Vercel: aunque la compartan en grupos y entren cientos de personas, el script recibe un par de pedidos por minuto (Google limita las ejecuciones simultáneas por cuenta).
-- El script no tiene `doPost`: desde internet nadie puede escribir ni borrar en la hoja. Tiene `@OnlyCurrentDoc`: solo puede tocar esa hoja.
-- `vercel.json` agrega encabezados de seguridad (CSP, anti-iframe, nosniff, HSTS, etc.).
-- No hay dependencias de npm ni formularios que guarden datos; la selección del visitante queda solo en su navegador.
+**Implementado**
+- La web solo recibe números; nombres, DNI y teléfonos nunca salen de la hoja. `/api/numeros` vuelve a filtrar la respuesta (solo enteros del 1 al 500).
+- La URL del Apps Script está en una variable de entorno secreta de Vercel, no en el código.
+- El Apps Script es de solo lectura (no hay `doPost`), ignora parámetros y tiene `@OnlyCurrentDoc`.
+- `vercel.json` agrega encabezados de seguridad: Content-Security-Policy estricta, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`, HSTS y `Cross-Origin-Opener-Policy`. Por la CSP, **no usar `<script>` ni `style=""` en línea**.
+- `.vercelignore` funciona como lista de permitidos: solo se publican `index.html`, `css/`, `js/`, `img/`, `api/` y `vercel.json`.
+- `.gitignore` excluye `.env*`, `.vercel/`, `.claude/` y planillas (`*.xlsx`, `*.xls`, `*.csv`).
+- Sin dependencias de npm: no hay librerías de terceros que actualizar.
 
-**Te toca a vos**
-- Verificación en dos pasos en **Google** (maxi2017p@gmail.com), **Vercel** y **WhatsApp** (Ajustes → Cuenta → Verificación en dos pasos).
-- No compartas la hoja ni la URL `/exec`. Si alguna vez se filtra: Administrar implementaciones → **Archivar** y crear una nueva, y actualizar `APPS_SCRIPT_URL`.
-- Confirmá cada pago **en la app de Naranja X**, no por la captura del comprobante.
-- Terminada la entrega de premios, borrá los datos personales de la hoja (Ley 25.326, art. 4 inc. 7).
-- Antes de vender: consultá con la **Lotería de la Provincia de Córdoba** la autorización o "toma de conocimiento" de la rifa.
+**Buenas prácticas de operación**
+- Verificación en dos pasos en Google, Vercel, GitHub y WhatsApp.
+- No compartir la hoja ni la URL `/exec`. Si se filtra: archivar la implementación, crear una nueva y actualizar `APPS_SCRIPT_URL`.
+- Confirmar cada pago en la app de Naranja X, nunca por la captura del comprobante.
+- Al terminar la entrega de premios, borrar los datos personales de la hoja (Ley 25.326, art. 4 inc. 7).
+- Antes de vender, gestionar ante la **Lotería de la Provincia de Córdoba** la autorización o "toma de conocimiento" de la rifa.
