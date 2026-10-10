@@ -39,7 +39,7 @@ window.RIFA = {
   // Si la imagen fue generada con IA, agregá ilustrativa: true (muestra la etiqueta "Imagen ilustrativa").
   premioMayor: {
     nombre: 'Moto',
-    detalle: 'Corven Energy 110 Full · Modelo 2023',
+    detalle: 'Corven Energy 110 Full · Modelo 2023 · Nva',
     imagen: 'img/premios/moto.webp',
     ilustrativa: true,
   },

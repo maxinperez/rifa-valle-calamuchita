@@ -146,7 +146,7 @@
   async function pedirDatos() {
     if (!C.apiUrl) throw new Error('sin-config');
     const control = new AbortController();
-    const espera = setTimeout(() => control.abort(), 15000);
+    const espera = setTimeout(() => control.abort(), 50000);
     try {
       const resp = await fetch(C.apiUrl, { cache: 'no-store', signal: control.signal });
       const datos = await resp.json().catch(() => null);
@@ -162,7 +162,7 @@
   async function cargarDatos() {
     if (estado.cargando) return;
     estado.cargando = true;
-    dibujarEstadoDatos();
+    if (!estado.error) dibujarEstadoDatos();
     try {
       const datos = DEMO ? datosDemo() : await pedirDatos();
       const valido = (n) => Number.isInteger(n) && n >= 1 && n <= C.totalNumeros;
@@ -174,9 +174,18 @@
       quitarElegidosOcupados();
     } catch (err) {
       estado.error = err;
+      // Si todavía no se mostró ningún número, se reintenta solo una vez más antes de avisar.
+      if (!estado.cargado && !estado.reintentado && err.message !== 'sin-config') {
+        estado.reintentado = true;
+        estado.cargando = false;
+        setTimeout(cargarDatos, 2000);
+        return;
+      }
     } finally {
-      estado.cargando = false;
-      dibujarTodo();
+      if (estado.cargando) {
+        estado.cargando = false;
+        dibujarTodo();
+      }
     }
   }
 

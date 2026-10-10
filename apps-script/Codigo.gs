@@ -16,6 +16,10 @@
  * Si más adelante cambiás este código: Implementar → Administrar implementaciones →
  * lápiz → Versión: "Nueva versión" → Implementar. La URL no cambia.
  *
+ * Activador (una sola vez, para que la web cargue rápido):
+ *   En el editor elegí la función "instalarActivador" arriba y tocá Ejecutar.
+ *   Cada 5 minutos deja calculada la lista de números; así la web no espera a que se lea la hoja.
+ *
  * Seguridad:
  *  - doGet solo LEE la hoja y devuelve la lista de números. Nombres, DNI y teléfonos nunca salen.
  *  - No hay doPost: desde internet nadie puede escribir ni borrar nada en la hoja.
@@ -26,19 +30,38 @@ const HOJA = 'Ventas';
 const TOTAL_NUMEROS = 500;
 const COL = { FECHA: 4, NUMEROS: 5, ESTADO: 6, CONTROL: 8 }; // A = 1
 const CLAVE_CACHE = 'estado-numeros';
-const SEGUNDOS_CACHE = 30;
+const SEGUNDOS_CACHE_LARGA = 600;
 const PRECIO = 15000;
 
 /* ---------- API para la web ---------- */
 
 function doGet() {
-  const cache = CacheService.getScriptCache();
-  let json = cache.get(CLAVE_CACHE);
-  if (!json) {
-    json = JSON.stringify(calcularEstado_());
-    cache.put(CLAVE_CACHE, json, SEGUNDOS_CACHE);
-  }
+  const json = CacheService.getScriptCache().get(CLAVE_CACHE) ||
+    PropertiesService.getScriptProperties().getProperty(CLAVE_CACHE) ||
+    guardarEstado_();
   return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
+}
+
+// Calcula la lista y la deja guardada (caché rápida + copia permanente). Devuelve el JSON.
+function guardarEstado_() {
+  const json = JSON.stringify(calcularEstado_());
+  CacheService.getScriptCache().put(CLAVE_CACHE, json, SEGUNDOS_CACHE_LARGA);
+  PropertiesService.getScriptProperties().setProperty(CLAVE_CACHE, json);
+  return json;
+}
+
+// Lo ejecuta el activador cada 5 minutos.
+function actualizarEstado() {
+  guardarEstado_();
+}
+
+// Ejecutar UNA vez a mano desde el editor. Si se ejecuta de nuevo, no duplica el activador.
+function instalarActivador() {
+  ScriptApp.getProjectTriggers()
+    .filter((t) => t.getHandlerFunction() === 'actualizarEstado')
+    .forEach((t) => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('actualizarEstado').timeBased().everyMinutes(5).create();
+  guardarEstado_();
 }
 
 function calcularEstado_() {
@@ -76,15 +99,15 @@ function onOpen() {
 function onEdit(e) {
   const hoja = e.range.getSheet();
   if (hoja.getName() !== HOJA) return;
-  CacheService.getScriptCache().remove(CLAVE_CACHE);
   completarFechas_(hoja, e.range);
   revisarNumeros_(hoja);
+  guardarEstado_(); // la web ve el cambio enseguida
 }
 
 function revisarDesdeMenu() {
   const hoja = SpreadsheetApp.getActive().getSheetByName(HOJA);
   const problemas = revisarNumeros_(hoja);
-  CacheService.getScriptCache().remove(CLAVE_CACHE);
+  guardarEstado_();
   SpreadsheetApp.getUi().alert(problemas
     ? `Hay ${problemas} fila(s) con problemas. Mirá la columna "Control".`
     : 'Todo en orden: no hay números repetidos ni fuera de rango.');

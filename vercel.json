@@ -1,5 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/numeros.js": { "maxDuration": 45 }
+  },
   "headers": [
     {
       "source": "/(.*)",
