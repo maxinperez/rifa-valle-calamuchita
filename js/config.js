@@ -4,7 +4,7 @@
  * Después de editar, volvé a publicar en Vercel.
  */
 window.RIFA = {
-  nombre: 'Rifa Artículos Lohema',
+  nombre: 'Rifa Arts Lohema',
   // Zonas donde trabaja Arts Lohema (portada y apartado "Quiénes organizamos")
   localidades: ['Todo el Valle de Calamuchita', 'Departamento Santa María', 'Córdoba Capital', 'Río Cuarto', 'Las Higueras', 'Departamento Ischilín'],
 
