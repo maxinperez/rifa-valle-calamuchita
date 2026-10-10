@@ -1,0 +1,4 @@
+Guardá acá las fotos de los premios (por ejemplo moto.jpg, camara-exterior.jpg).
+Después indicá la ruta en js/config.js, en el campo "imagen" de cada premio:
+  imagen: 'img/premios/moto.jpg'
+Recomendado: fotos cuadradas (la moto, horizontal 4:3), en JPG o WebP, de menos de 300 KB.

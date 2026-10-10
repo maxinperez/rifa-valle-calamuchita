@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gran Rifa Potrero</title>
+  <meta name="description" content="Elegí tus números de la Gran Rifa Potrero: 500 números a $15.000. Primer premio: una moto. Potrero de Garay, Santa Rosa de Calamuchita, Embalse, Los Reartes y alrededores.">
+  <meta name="theme-color" content="#1B4332">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Gran Rifa Potrero">
+  <meta property="og:description" content="500 números a $15.000. Primer premio: una moto. Mirá qué números quedan libres y pedí el tuyo por WhatsApp.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <svg width="0" height="0" class="sprites" aria-hidden="true" focusable="false">
+    <symbol id="pino" viewBox="0 0 24 24">
+      <path d="M12 1.5 7 8h2.6l-4.4 6h3.2l-4.6 6.5h7.1V23h2.2v-2.5h7.1L15.6 14h3.2l-4.4-6H17z"/>
+    </symbol>
+    <symbol id="regalo" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="8" width="18" height="4" rx="1"/>
+        <path d="M5 12v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8M12 8v13"/>
+        <path d="M12 8c-1.5-3.5-5.5-4-5.5-1.5C6.5 8 12 8 12 8zM12 8c1.5-3.5 5.5-4 5.5-1.5C17.5 8 12 8 12 8z"/>
+      </g>
+    </symbol>
+    <symbol id="chat" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 12a8 8 0 1 1 3.6 6.7L4 20l1.3-3.5A7.9 7.9 0 0 1 4 12z"/>
+    </symbol>
+    <symbol id="copiar" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></g>
+    </symbol>
+    <symbol id="refrescar" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 12a8 8 0 1 1-2.4-5.7M20 4v4.5h-4.5"/>
+    </symbol>
+    <symbol id="lupa" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></g>
+    </symbol>
+  </svg>
+
+  <div class="toldo" aria-hidden="true"><div class="toldo__tela"></div></div>
+
+  <header class="hero">
+    <svg class="banderines" viewBox="0 0 1000 72" aria-hidden="true" focusable="false"></svg>
+
+    <div class="contenedor hero__contenido">
+      <p class="antetitulo">Rifa · Valle de Calamuchita</p>
+      <h1 class="hero__titulo">Gran Rifa <span>Potrero</span></h1>
+      <p class="hero__lugares" data-c="lugares">Potrero de Garay · Santa Rosa de Calamuchita · Embalse · Los Reartes · y alrededores</p>
+
+      <div class="boleto hero__boleto">
+        <div class="boleto__dato">
+          <span class="boleto__etq">Valor</span>
+          <strong data-c="precio">$15.000</strong>
+          <span>por número</span>
+        </div>
+        <div class="boleto__dato">
+          <span class="boleto__etq">Números</span>
+          <strong data-c="total">500</strong>
+          <span>del <span data-c="rango">001 al 500</span></span>
+        </div>
+        <div class="boleto__dato">
+          <span class="boleto__etq">Sorteo</span>
+          <strong data-c="sorteo-fecha">A confirmar</strong>
+          <span data-c="sorteo-lugar">Lugar a confirmar</span>
+        </div>
+      </div>
+
+      <div class="hero__acciones">
+        <a class="btn btn--rojo" href="#numeros">Elegir mis números</a>
+        <a class="btn btn--linea" href="#premios">Ver premios</a>
+      </div>
+
+      <div class="progreso" aria-live="polite">
+        <div class="progreso__barra" role="img" aria-label="Avance de la venta">
+          <span class="progreso__vendidos"></span>
+          <span class="progreso__reservados"></span>
+        </div>
+        <p class="progreso__texto">
+          <span><i class="punto punto--vendido"></i><b data-cuenta="vendidos">–</b> vendidos</span>
+          <span><i class="punto punto--reservado"></i><b data-cuenta="reservados">–</b> reservados</span>
+          <span><i class="punto punto--libre"></i><b data-cuenta="libres">–</b> disponibles</span>
+        </p>
+      </div>
+    </div>
+
+    <svg class="hero__arboleda hero__arboleda--izq" viewBox="0 0 170 130" aria-hidden="true" focusable="false">
+      <use href="#pino" x="0" y="20" width="110" height="110" fill="#2D6A4F"/>
+      <use href="#pino" x="62" y="52" width="78" height="78" fill="#1B4332"/>
+      <use href="#pino" x="118" y="86" width="44" height="44" fill="#52B788"/>
+    </svg>
+    <svg class="hero__arboleda hero__arboleda--der" viewBox="0 0 170 130" aria-hidden="true" focusable="false">
+      <use href="#pino" x="60" y="20" width="110" height="110" fill="#2D6A4F"/>
+      <use href="#pino" x="30" y="52" width="78" height="78" fill="#1B4332"/>
+      <use href="#pino" x="8" y="86" width="44" height="44" fill="#52B788"/>
+    </svg>
+  </header>
+
+  <main>
+    <section class="seccion" id="premios" aria-labelledby="premios-titulo">
+      <div class="contenedor">
+        <p class="antetitulo">Lo que podés ganar</p>
+        <h2 class="titulo-seccion" id="premios-titulo"><span data-c="cant-premios">21</span> premios</h2>
+
+        <article class="premio-mayor" id="premio-mayor"></article>
+
+        <h3 class="subtitulo">Y además</h3>
+        <ul class="premios" id="premios-lista"></ul>
+      </div>
+    </section>
+
+    <section class="seccion seccion--numeros" id="numeros" aria-labelledby="numeros-titulo">
+      <div class="contenedor">
+        <p class="antetitulo">500 números · 5 páginas</p>
+        <h2 class="titulo-seccion" id="numeros-titulo">Elegí tus números</h2>
+        <p class="bajada">Tocá los números libres para sumarlos a tu pedido. Los que tienen un pino ya tienen dueño.</p>
+
+        <div class="paginas" role="tablist" aria-label="Páginas de números" id="paginas"></div>
+
+        <div class="herramientas">
+          <form class="buscador" id="buscador" role="search">
+            <label class="sr" for="buscar-num">Buscar un número</label>
+            <svg class="buscador__icono" aria-hidden="true"><use href="#lupa"/></svg>
+            <input id="buscar-num" type="number" inputmode="numeric" min="1" max="500" placeholder="Buscar n.º" autocomplete="off">
+            <button type="submit" class="btn btn--chico">Ir</button>
+          </form>
+
+          <label class="interruptor">
+            <input type="checkbox" id="solo-libres">
+            <span class="interruptor__pista" aria-hidden="true"></span>
+            Ver solo disponibles
+          </label>
+        </div>
+        <p class="buscador__msj" id="buscador-msj" aria-live="polite"></p>
+
+        <ul class="leyenda" aria-label="Referencias">
+          <li><span class="mini mini--libre">7</span> Disponible</li>
+          <li><span class="mini mini--elegido">7</span> Elegido</li>
+          <li><span class="mini mini--reservado"><svg aria-hidden="true"><use href="#pino"/></svg></span> Reservado</li>
+          <li><span class="mini mini--vendido"><svg aria-hidden="true"><use href="#pino"/></svg></span> Vendido</li>
+        </ul>
+
+        <div class="aviso" id="aviso" hidden>
+          <p id="aviso-texto">No pudimos cargar los números.</p>
+          <button type="button" class="btn btn--chico" data-actualizar>Reintentar</button>
+        </div>
+
+        <div class="grilla" id="grilla" aria-label="Números"></div>
+
+        <p class="estado-datos">
+          <span id="actualizado">Cargando números…</span>
+          <button type="button" class="enlace-boton" data-actualizar>
+            <svg aria-hidden="true"><use href="#refrescar"/></svg>Actualizar
+          </button>
+        </p>
+      </div>
+    </section>
+
+    <section class="seccion" id="como" aria-labelledby="como-titulo">
+      <div class="contenedor">
+        <p class="antetitulo">Fácil y rápido</p>
+        <h2 class="titulo-seccion" id="como-titulo">Cómo participar</h2>
+
+        <ol class="pasos">
+          <li class="paso">
+            <span class="paso__n">1</span>
+            <h3>Elegí</h3>
+            <p>Tocá uno o más números libres en la grilla.</p>
+          </li>
+          <li class="paso">
+            <span class="paso__n">2</span>
+            <h3>Transferí</h3>
+            <p><span data-c="precio">$15.000</span> por número a la cuenta de <span data-c="billetera">Naranja X</span>:</p>
+            <button type="button" class="alias" data-copiar-alias>
+              <span class="alias__etq">Alias</span>
+              <span class="alias__valor" data-c="alias">xxxxxx</span>
+              <svg aria-hidden="true"><use href="#copiar"/></svg>
+              <span class="sr">Copiar alias</span>
+            </button>
+          </li>
+          <li class="paso">
+            <span class="paso__n">3</span>
+            <h3>Avisá por WhatsApp</h3>
+            <p>Mandá el comprobante con tu nombre y apellido, DNI y teléfono al <a data-wa href="https://wa.me/5493547319359"><span data-c="whatsapp">3547 31-9359</span></a>.</p>
+          </li>
+          <li class="paso">
+            <span class="paso__n">4</span>
+            <h3>¡Listo!</h3>
+            <p>Cuando verifiquemos el pago, tu número aparece con un pino. Guardá el comprobante: lo vas a necesitar para retirar tu premio.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <svg class="pie__bosque" viewBox="0 0 1200 112" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false"><use href="#pino" x="-30" y="42" width="70" height="70" fill="#2D6A4F"/><use href="#pino" x="29" y="31" width="81" height="81" fill="#2D6A4F"/><use href="#pino" x="78" y="14" width="98" height="98" fill="#2D6A4F"/><use href="#pino" x="131" y="29" width="83" height="83" fill="#2D6A4F"/><use href="#pino" x="188" y="13" width="99" height="99" fill="#2D6A4F"/><use href="#pino" x="242" y="16" width="96" height="96" fill="#2D6A4F"/><use href="#pino" x="297" y="11" width="101" height="101" fill="#2D6A4F"/><use href="#pino" x="346" y="28" width="84" height="84" fill="#2D6A4F"/><use href="#pino" x="402" y="15" width="97" height="97" fill="#2D6A4F"/><use href="#pino" x="449" y="16" width="96" height="96" fill="#2D6A4F"/><use href="#pino" x="502" y="7" width="105" height="105" fill="#2D6A4F"/><use href="#pino" x="559" y="37" width="75" height="75" fill="#2D6A4F"/><use href="#pino" x="612" y="7" width="105" height="105" fill="#2D6A4F"/><use href="#pino" x="668" y="18" width="94" height="94" fill="#2D6A4F"/><use href="#pino" x="722" y="7" width="105" height="105" fill="#2D6A4F"/><use href="#pino" x="781" y="28" width="84" height="84" fill="#2D6A4F"/><use href="#pino" x="832" y="10" width="102" height="102" fill="#2D6A4F"/><use href="#pino" x="883" y="36" width="76" height="76" fill="#2D6A4F"/><use href="#pino" x="933" y="26" width="86" height="86" fill="#2D6A4F"/><use href="#pino" x="983" y="6" width="106" height="106" fill="#2D6A4F"/><use href="#pino" x="1037" y="14" width="98" height="98" fill="#2D6A4F"/><use href="#pino" x="1095" y="40" width="72" height="72" fill="#2D6A4F"/><use href="#pino" x="1145" y="21" width="91" height="91" fill="#2D6A4F"/><use href="#pino" x="1198" y="26" width="86" height="86" fill="#2D6A4F"/><use href="#pino" x="-12" y="33" width="79" height="79" fill="#1B4332"/><use href="#pino" x="29" y="54" width="58" height="58" fill="#1B4332"/><use href="#pino" x="74" y="43" width="69" height="69" fill="#1B4332"/><use href="#pino" x="127" y="48" width="64" height="64" fill="#1B4332"/><use href="#pino" x="169" y="53" width="59" height="59" fill="#1B4332"/><use href="#pino" x="213" y="54" width="58" height="58" fill="#1B4332"/><use href="#pino" x="259" y="55" width="57" height="57" fill="#1B4332"/><use href="#pino" x="306" y="45" width="67" height="67" fill="#1B4332"/><use href="#pino" x="349" y="34" width="78" height="78" fill="#1B4332"/><use href="#pino" x="395" y="35" width="77" height="77" fill="#1B4332"/><use href="#pino" x="444" y="44" width="68" height="68" fill="#1B4332"/><use href="#pino" x="491" y="49" width="63" height="63" fill="#1B4332"/><use href="#pino" x="541" y="32" width="80" height="80" fill="#1B4332"/><use href="#pino" x="587" y="41" width="71" height="71" fill="#1B4332"/><use href="#pino" x="631" y="46" width="66" height="66" fill="#1B4332"/><use href="#pino" x="676" y="55" width="57" height="57" fill="#1B4332"/><use href="#pino" x="721" y="38" width="74" height="74" fill="#1B4332"/><use href="#pino" x="773" y="64" width="48" height="48" fill="#1B4332"/><use href="#pino" x="824" y="65" width="47" height="47" fill="#1B4332"/><use href="#pino" x="870" y="62" width="50" height="50" fill="#1B4332"/><use href="#pino" x="911" y="30" width="82" height="82" fill="#1B4332"/><use href="#pino" x="954" y="44" width="68" height="68" fill="#1B4332"/><use href="#pino" x="996" y="51" width="61" height="61" fill="#1B4332"/><use href="#pino" x="1044" y="63" width="49" height="49" fill="#1B4332"/><use href="#pino" x="1097" y="34" width="78" height="78" fill="#1B4332"/><use href="#pino" x="1149" y="34" width="78" height="78" fill="#1B4332"/><use href="#pino" x="1202" y="39" width="73" height="73" fill="#1B4332"/><rect x="0" y="106" width="1200" height="6" fill="#1B4332"/></svg>
+
+    <div class="pie__cuerpo">
+      <div class="contenedor">
+        <p class="pie__marca"><span data-c="nombre">Gran Rifa Potrero</span></p>
+        <p class="pie__contacto">Consultas por WhatsApp al <a data-wa href="https://wa.me/5493547319359"><span data-c="whatsapp">3547 31-9359</span></a>. Es el único número oficial: desconfiá de cualquier otro número o alias que diga ser de esta rifa.</p>
+
+        <section class="bases" id="bases" aria-labelledby="bases-titulo">
+          <h2 id="bases-titulo">Bases y condiciones</h2>
+          <p>La compra de uno o más números implica la aceptación total de estas bases y condiciones. Leerlas es responsabilidad exclusiva del comprador.</p>
+          <ol>
+            <li>Cada número tiene un valor de <span data-c="precio">$15.000</span>. Los pagos se realizan únicamente por transferencia a la cuenta de <span data-c="billetera">Naranja X</span> (alias: <span data-c="alias">xxxxxx</span>). La compra queda confirmada una vez verificado el comprobante enviado por WhatsApp al <span data-c="whatsapp">3547 31-9359</span>.</li>
+            <li>El comprador deberá conservar el comprobante de pago y presentarlo para retirar su premio.</li>
+            <li>El día del sorteo, los ganadores deberán presentarse con su DNI para reclamar el premio. Los datos del documento deberán coincidir con los brindados al momento de la compra.</li>
+            <li>Si algún ganador no se presenta, se lo contactará por teléfono hasta en tres (3) oportunidades y dispondrá de un plazo de setenta y dos (72) horas, contadas desde la finalización del sorteo, para comunicarse y reclamar su premio. Vencido ese plazo, el premio perderá su efecto.</li>
+            <li>Para la transferencia de la motocicleta se otorgará un plazo de quince (15) días corridos. Todos los gastos de transferencia correrán por cuenta del ganador, y la motocicleta se entregará una vez finalizados todos los trámites.</li>
+            <li>La fecha, el lugar y la modalidad del sorteo se informarán en esta página. Fecha: <span data-c="sorteo-fecha">A confirmar</span>. Lugar: <span data-c="sorteo-lugar">Lugar a confirmar</span>. Modalidad: <span data-c="sorteo-modalidad">A confirmar</span>.</li>
+            <li>Los únicos medios oficiales de esta rifa son esta página, el WhatsApp <span data-c="whatsapp">3547 31-9359</span> y el alias <span data-c="alias">xxxxxx</span>. La organización no se responsabiliza por pagos realizados a otros números, alias o cuentas.</li>
+            <li>Datos personales: el nombre y apellido, el DNI y el teléfono son obligatorios para registrar la compra; sin ellos no es posible asignar el número ni entregar el premio. Se usan únicamente para identificar al titular de cada número y contactar a los ganadores, no se publican ni se ceden a terceros, y se eliminan una vez finalizada la entrega de premios. El titular puede pedir el acceso, la rectificación o la supresión de sus datos escribiendo al WhatsApp <span data-c="whatsapp">3547 31-9359</span> (Ley 25.326 de Protección de Datos Personales).</li>
+          </ol>
+        </section>
+      </div>
+    </div>
+  </footer>
+
+  <div class="carrito" id="carrito" hidden>
+    <div class="contenedor carrito__interior">
+      <div class="carrito__lista" id="carrito-lista" aria-label="Números elegidos"></div>
+      <div class="carrito__accion">
+        <p class="carrito__resumen" id="carrito-resumen" aria-live="polite"></p>
+        <div class="carrito__botones">
+          <button type="button" class="enlace-boton enlace-boton--claro" id="carrito-vaciar">Vaciar</button>
+          <a class="btn btn--mostaza" id="carrito-wa" href="https://wa.me/5493547319359" target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#chat"/></svg>Pedir por WhatsApp
+          </a>
+        </div>
+        <p class="carrito__legal">Al comprar aceptás las <a href="#bases">bases y condiciones</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tostada" id="tostada" role="status" aria-live="polite"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Lista de permitidos: se ignora TODO y solo se publica lo que figura con "!".
+# Así, cualquier archivo nuevo que dejes en la carpeta (planillas, .env, notas) queda privado.
+/*
+!/index.html
+!/css
+!/js
+!/img
+!/api
+!/vercel.json
+/img/premios/LEEME.txt
