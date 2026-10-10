@@ -19,7 +19,9 @@ window.RIFA = {
   // Grupo comunitario de Arts Lohema (no es el canal de venta de la rifa)
   grupoWhatsapp: 'https://chat.whatsapp.com/ET9cz48G8uJ7zHoX92NKvV',
 
-  alias: 'xxxxxx',
+  alias: 'rosas.luz.mar',
+  titular: 'Leandra Fernández',
+  cuit: '27-20784885-4',
   billetera: 'Naranja X',
 
   sorteo: {
